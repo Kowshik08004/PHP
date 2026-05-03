@@ -29,13 +29,23 @@
             return DB::table('user')->select()->all();
         }
 
-        public function get_by_id($id)
-        {
-            return DB::table('user')->select()->where("id = :id",["id" => $id]);
-        }
+        // public function get_by_id($id)
+        // {
+        //     return DB::table('user')->select()->where("id = :id",["id" => $id]);
+        // }
 
-        public function get_by_email($email)
-        {
+        // public function get_by_email($email)
+        // {
+        //     return DB::table('user')->select()->where("email = :email",["email" => $email]);
+        // }
 
+        //replaced get_by_id() & get_by_email() method
+        public function __call($function, $param)
+        {
+            $values = $param[0];
+            $column = str_replace("get_by_", "", $function);
+            $column = addslashes($column);
+
+            return DB::table('user')->select()->where($column . "=:" .$column ,[$column => $values]);
         }
     }
