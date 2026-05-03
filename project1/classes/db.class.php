@@ -34,7 +34,7 @@ class DB {
     protected function run($values = array())
     {
         $stm = self::$con->prepare($this->query);
-        $check = $stm->execute();
+        $check = $stm->execute($values);
         if($check)
         {
             $data = $stm->fetchALL(PDO::FETCH_OBJ);
@@ -52,8 +52,10 @@ class DB {
         return $this->run(); 
     }
 
-    public function where(){
-
+    public function where($where, $values = array())
+    {
+        $this->query .= "where " .$where;
+        return $this->run($values); 
     }
 
     public function select()
