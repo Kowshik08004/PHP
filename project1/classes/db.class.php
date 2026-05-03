@@ -21,8 +21,9 @@ class DB {
             try {
                 $string = "mysql:host=" .DBHOST. ";dbname=" .DBNAME;
                 self::$con = new PDO($string, DBUSER, DBPASS);
+                self::$con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                $e->getMessage();
+                echo $e->getMessage();
                 die;
             }
         }
@@ -57,7 +58,7 @@ class DB {
 
     public function select()
     {
-        $this->query = "SELECT * FROM" .SELF::TABLE. " ";
+        $this->query = "select * from " . self::$table  . " ";
         return self::$instance;
     }
 

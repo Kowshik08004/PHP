@@ -12,5 +12,5 @@ spl_autoload_register(function($classname){
 
 define("DBHOST", "localhost");
 define("DBUSER", "root");
-define("DBPASS"," ");
+define("DBPASS","");
 define("DBNAME", "oop_db");

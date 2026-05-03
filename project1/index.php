@@ -1,8 +1,15 @@
-<?php
+<!DOCTYPE>
+<html>
+    <body>
+        <?php
 
-include "init.php";
+            include "init.php";
 
-$data = DB::TABLE('users')->select()->all();
+            $data = DB::table('user')->select()->all();
 
-echo "<pre>";
-print_r($data);
+            echo "<pre>";
+            print_r($data);
+        ?>
+
+    </body>
+</html>
