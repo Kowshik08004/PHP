@@ -5,8 +5,7 @@
 
             include "init.php";
 
-            // $data = DB::table('user')->select()->all();
-            $data = DB::table('user')->select()->where("id = :id",["id" => 1]);
+            $data = User::action()->get_all();
 
             echo "<pre>";
             print_r($data);
