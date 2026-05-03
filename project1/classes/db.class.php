@@ -30,23 +30,39 @@ class DB {
         return self::$instance;
     }
 
-    protected function run(){
+    protected function run($values = array())
+    {
+        $stm = self::$con->prepare($this->query);
+        $check = $stm->execute();
+        if($check)
+        {
+            $data = $stm->fetchALL(PDO::FETCH_OBJ);
+            if(is_array($data) && count($data) > 0)
+            {
+                return $data;
+            }
+        }
 
+        return false;
     }
 
-    public function all(){
-
+    public function all()
+    {
+        return $this->run(); 
     }
 
     public function where(){
 
     }
 
-    public function select(){
-
+    public function select()
+    {
+        $this->query = "SELECT * FROM" .SELF::TABLE. " ";
+        return self::$instance;
     }
 
-    public function update(){
-
+    public function update()
+    {
+        return self::$instance;
     }
 }
