@@ -5,7 +5,8 @@ class DB {
     protected static $con;
     protected static $table;
     protected $query;
-    protected $query_type;
+    protected $values = array();
+    protected $query_type = 'select';
 
     public static function table($table){
         
@@ -37,11 +38,36 @@ class DB {
         $check = $stm->execute($values);
         if($check)
         {
-            $data = $stm->fetchALL(PDO::FETCH_OBJ);
-            if(is_array($data) && count($data) > 0)
-            {
-                return $data;
+
+            switch ($this->query_type) {
+                case 'select':
+                    $data = $stm->fetchALL(PDO::FETCH_OBJ);
+                    if(is_array($data) && count($data) > 0)
+                    {
+                        return $data;
+                    }
+                    break;
+
+                case 'update':
+
+                    return true;
+                    break;
+
+                case 'insert':
+
+                    return true;
+                    break;
+                case 'delete':
+
+                    return true;
+                    break;
+
+                default:
+
+                    break;
             }
+
+            
         }
 
         return false;
@@ -54,18 +80,49 @@ class DB {
 
     public function where($where, $values = array())
     {
-        $this->query .= "where " .$where;
-        return $this->run($values); 
+        switch ($this->query_type) {
+            case 'select':
+                $this->query .= " where " .$where;
+                return $this->run($values); 
+                break;
+
+            case 'update':
+                $merged = array_merge($this->values, $values);
+                $this->query .= " where " .$where;
+                return $this->run($merged); 
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        
     }
 
     public function select()
     {
+        $this->query_type = "select";
         $this->query = "select * from " . self::$table  . " ";
         return self::$instance;
     }
 
-    public function update()
+    public function update(array $values)
     {
+        $this->query_type = "update";
+        $this->query = "update " .self::$table. " set ";
+
+        foreach ($values as $key => $value) {
+            $this->query .= $key .  "= :" .$key. ",";
+        }
+
+        $this->query = trim($this->query,",");
+        $this->values = $values;
+
         return self::$instance;
+    }
+
+    public function query($query, $values = array())
+    {
+
     }
 }

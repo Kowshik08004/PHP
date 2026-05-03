@@ -19,6 +19,11 @@
 
         }
 
+        public function update_by_id($values, $id)
+        {
+            return DB::table('user')->update($values)->where("id = :id",["id" => $id]);
+        }
+
         public function get_all()
         {
             return DB::table('user')->select()->all();
